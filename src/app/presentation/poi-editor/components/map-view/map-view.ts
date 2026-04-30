@@ -8,12 +8,8 @@ import {
   Signal,
   ViewChild,
 } from '@angular/core';
-import maplibregl, {
-  GeoJSONSource,
-  Map as MapLibreMap,
-} from 'maplibre-gl';
-
 import { FeatureCollection, Point } from 'geojson';
+import maplibregl, { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl';
 import { MAP_CONFIG } from '../../../../core/config/map.config';
 import { Poi } from '../../../../domain/poi/models/poi.model';
 import { PoiFacade } from '../../facade/poi.facade';
@@ -48,6 +44,7 @@ export class MapView implements AfterViewInit {
           coordinates: poi.coordinates,
         },
         properties: {
+          id: poi.id,
           name: poi.name,
           category: poi.category,
         },
@@ -80,6 +77,11 @@ export class MapView implements AfterViewInit {
 
   private initPoiLayer(): void {
     if (this.map.getSource('pois')) return;
+    this.initPoiSource();
+    this.initPoiCircleLayer();
+    this.bindPoiEvents();
+  }
+  private initPoiSource(): void {
     this.map.addSource('pois', {
       type: 'geojson',
       data: {
@@ -87,6 +89,8 @@ export class MapView implements AfterViewInit {
         features: [],
       },
     });
+  }
+  private initPoiCircleLayer(): void {
     this.map.addLayer({
       id: 'pois-layer',
       type: 'circle',
@@ -95,6 +99,32 @@ export class MapView implements AfterViewInit {
         'circle-radius': 6,
         'circle-color': '#2563eb',
       },
+    });
+  }
+
+  private bindPoiEvents(): void {
+    this.map.on('click', (event) => {
+      const features = this.map.queryRenderedFeatures(event.point, {
+        layers: ['pois-layer'],
+      });
+      if (features.length) {
+        const feature = features[0];
+        const id = feature.properties?.['id'] as string;
+        if (!id) return;
+        const poi = this.facade.pois().find((p) => p.id === id);
+        if (!poi) return;
+        this.facade.selectPoi(poi);
+        return;
+      }
+      const coordinates: [number, number] = [event.lngLat.lng, event.lngLat.lat];
+      const poi: Poi = {
+        id: crypto.randomUUID(),
+        name: 'Nuevo punto',
+        category: 'Defecto',
+        coordinates,
+      };
+      this.facade.addPoi(poi);
+      this.facade.selectPoi(poi);
     });
   }
 }

@@ -28,4 +28,8 @@ export class PoiFacade {
   selectPoi(poi: Poi | null) {
     this.store.selectPoi(poi);
   }
+
+  updatePoiPartial(id: string, changes: Partial<Poi>) {
+    this.store.updatePoiPartial(id, changes);
+  }
 }

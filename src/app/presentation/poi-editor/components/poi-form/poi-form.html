@@ -1,0 +1,21 @@
+@if (selectedPoi()) {
+  <div class="poi-form">
+    <h3 class="poi-form__title">Edit POI</h3>
+
+    <div class="poi-form__field">
+      <label>Name</label>
+     <input
+      [ngModel]="selectedPoi()!.name"
+      (ngModelChange)="updateName($event)"
+    />
+    </div>
+
+    <div class="poi-form__field">
+      <label>Category</label>
+      <input
+      [ngModel]="selectedPoi()!.category"
+      (ngModelChange)="updateCategory($event)"
+    />
+    </div>
+  </div>
+}

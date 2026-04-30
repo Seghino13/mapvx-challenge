@@ -7,7 +7,7 @@
 
   <aside class="poi-editor__panel">
     <h3>POIs</h3>
-
+      <app-poi-form />
     <ul>
       @for (poi of pois(); track poi.id) {
         <li>{{ poi.name }} ({{ poi.category }})</li>

@@ -28,4 +28,16 @@ export class PoiStore {
   selectPoi(poi: Poi | null) {
     this._selectedPoi.set(poi);
   }
+
+  updatePoiPartial(id: string, changes: Partial<Poi>) {
+    const pois = this._pois();
+    const target = pois.find((p) => p.id === id);
+    if (!target) return;
+    if (changes.name !== undefined) target.name = changes.name;
+    if (changes.category !== undefined) target.category = changes.category;
+    this._pois.set([...pois]);
+    if (this._selectedPoi()?.id === id) {
+      this._selectedPoi.set(target);
+    }
+  }
 }

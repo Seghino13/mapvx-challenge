@@ -1,0 +1,16 @@
+.poi-form {
+  &__title {
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  &__field {
+    margin-bottom: 10px;
+
+    input {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #ccc;
+    }
+  }
+}
