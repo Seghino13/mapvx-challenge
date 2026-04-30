@@ -1,59 +1,50 @@
-# PoiMapEditor
+# POI Map Editor
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
+A lightweight web application to visualize, create, edit and manage Points of Interest (POIs) on an interactive map using Angular and MapLibre GL.
 
-## Development server
+## Overview
 
-To start a local development server, run:
+The application allows users to:
+- Import GeoJSON files containing POIs
+- Visualize points on an interactive map
+- Create, edit and delete POIs
+- Persist data locally
+- Export the current state as a GeoJSON file
 
-```bash
-ng serve
-```
+## Tech Stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Angular (standalone components)
+- TypeScript (strict mode)
+- SCSS (7-1 architecture + BEM methodology)
+- MapLibre GL JS
 
-## Code scaffolding
+## Architecture
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+The project follows a lightweight Clean Architecture / DDD-inspired approach:
 
-```bash
-ng generate component component-name
-```
+- **Domain**: business rules, models, validation
+- **Infrastructure**: persistence, mappers, external integrations
+- **Presentation**: Angular components and UI
+- **Core**: shared configs and utilities
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+This separation ensures scalability, maintainability and testability.
 
-```bash
-ng generate --help
-```
+## Key Technical Decisions
 
-## Building
+- **Standalone components**: reduce boilerplate and improve modularity
+- **Signals-based state management**: simple and efficient alternative to NgRx for this scope
+- **Zoneless change detection**: improves performance and predictability
+- **Map isolation**: MapLibre logic is encapsulated to avoid coupling with Angular UI
+- **GeoJSON as source of truth**: aligns with geospatial standards and simplifies import/export
 
-To build the project run:
+## Setup
 
-```bash
-ng build
-```
+### Requirements
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Node.js (v18+ recommended)
+- Angular CLI
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Install
 
 ```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+npm install
