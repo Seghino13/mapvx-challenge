@@ -25,6 +25,7 @@ export class MapView implements AfterViewInit {
   private readonly facade = inject(PoiFacade);
   readonly pois: Signal<Poi[]> = this.facade.pois;
   readonly selectedPoi = this.facade.selectedPoi;
+  private lastGeoJson?: FeatureCollection<Point>;
 
   @ViewChild('map', { static: false })
   private mapContainer?: ElementRef<HTMLDivElement>;
@@ -33,9 +34,6 @@ export class MapView implements AfterViewInit {
   private readonly _poisEffect = effect(() => {
     const pois = this.pois();
     const selected = this.selectedPoi();
-    if (!this.map) return;
-    const source = this.map.getSource('pois') as GeoJSONSource | undefined;
-    if (!source) return;
     const geojson: FeatureCollection<Point> = {
       type: 'FeatureCollection',
       features: pois.map((poi) => ({
@@ -52,6 +50,10 @@ export class MapView implements AfterViewInit {
         },
       })),
     };
+    this.lastGeoJson = geojson;
+    if (!this.map) return;
+    const source = this.map.getSource('pois') as GeoJSONSource | undefined;
+    if (!source) return;
     source.setData(geojson);
   });
 
@@ -87,6 +89,10 @@ export class MapView implements AfterViewInit {
         features: [],
       },
     });
+    if (this.lastGeoJson) {
+      const source = this.map.getSource('pois') as GeoJSONSource;
+      source.setData(this.lastGeoJson);
+    }
     this.map.addLayer(MAP_LAYER);
     this.bindPoiEvents();
     this.bindDeleteEvent();
