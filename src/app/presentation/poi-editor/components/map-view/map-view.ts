@@ -5,8 +5,7 @@ import {
   effect,
   ElementRef,
   inject,
-  Signal,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FeatureCollection, Point } from 'geojson';
 import maplibregl, { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl';
@@ -23,7 +22,7 @@ import { PoiFacade } from '../../facade/poi.facade';
 })
 export class MapView implements AfterViewInit {
   private readonly facade = inject(PoiFacade);
-  readonly pois: Signal<Poi[]> = this.facade.pois;
+  readonly pois = this.facade.filteredPois;
   readonly selectedPoi = this.facade.selectedPoi;
   private lastGeoJson?: FeatureCollection<Point>;
 

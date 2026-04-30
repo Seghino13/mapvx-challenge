@@ -1,4 +1,4 @@
-import { Injectable, Signal, inject } from '@angular/core';
+import { Injectable, Signal, computed, inject, signal } from '@angular/core';
 import { PoiMapper } from '../../../domain/poi/mappers/poi.mapper';
 import { Poi } from '../../../domain/poi/models/poi.model';
 import { GeoJsonPoiValidator } from '../../../domain/poi/validators/geojson-poi.validator';
@@ -10,45 +10,35 @@ export class PoiFacade {
   private readonly store: PoiStore = inject(PoiStore);
   private readonly api = inject(PoiApiService);
   private readonly validator = new GeoJsonPoiValidator();
-
-
-
   readonly pois: Signal<Poi[]> = this.store.pois;
   readonly selectedPoi: Signal<Poi | null> = this.store.selectedPoi;
+  private readonly _filter = signal<string>('');
+  readonly filter = this._filter.asReadonly();
+
+  readonly filteredPois = computed(() => {
+    const term = this._filter();
+    const pois = this.store.pois();
+    if (!term) return pois;
+    return pois.filter((p) => p.name.toLowerCase().includes(term));
+  });
+
+  setFilter(value: string) {
+    this._filter.set(value.toLowerCase());
+  }
 
   async loadInitialData(): Promise<void> {
     try {
       const validJson = await this.api.loadValid();
       const invalidJson = await this.api.loadInvalid();
-
       const validResult = this.validator.validate(validJson);
       const invalidResult = this.validator.validate(invalidJson);
-
-      console.log('VALID SUMMARY', validResult.summary);
-      console.log('INVALID SUMMARY', invalidResult.summary);
-
-      const features = [
-        ...validResult.valid,
-        ...invalidResult.valid,
-      ];
-
-      // 🔥 mapper (manteniendo tu tipado actual)
-      const apiPois: Poi[] = features.map((f) =>
-        PoiMapper.fromFeature(f as any)
-      );
-
-      // 🔥 FIX CLAVE: merge con lo que ya existe (localStorage)
+      const features = [...validResult.valid, ...invalidResult.valid];
+      const apiPois: Poi[] = features.map((f) => PoiMapper.fromFeature(f as any));
       const current = this.store.pois();
-
       const merged: Poi[] = [
         ...current,
-        ...apiPois.filter(
-          (apiPoi) => !current.some((p) => p.id === apiPoi.id)
-        ),
+        ...apiPois.filter((apiPoi) => !current.some((p) => p.id === apiPoi.id)),
       ];
-
-      console.log('MERGED POIS', merged);
-
       this.store.setPois(merged);
     } catch (error) {
       console.error('Error loading POIs', error);
