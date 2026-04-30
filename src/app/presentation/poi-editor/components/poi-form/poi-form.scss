@@ -14,3 +14,19 @@
     }
   }
 }
+.poi-form__actions {
+  margin-top: 16px;
+}
+
+.poi-form__delete {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.poi-form__delete:hover {
+  background: #dc2626;
+}

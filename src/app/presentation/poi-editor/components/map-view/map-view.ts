@@ -89,6 +89,7 @@ export class MapView implements AfterViewInit {
     });
     this.map.addLayer(MAP_LAYER);
     this.bindPoiEvents();
+    this.bindDeleteEvent();
   }
 
   private bindPoiEvents(): void {
@@ -110,6 +111,22 @@ export class MapView implements AfterViewInit {
       };
       this.facade.addPoi(poi);
       this.facade.selectPoi(poi);
+    });
+  }
+
+  private bindDeleteEvent(): void {
+    this.map.on('contextmenu', (event) => {
+      const features = this.map.queryRenderedFeatures(event.point, {
+        layers: ['pois-layer'],
+      });
+      if (!features.length) return;
+      const id = features[0].properties?.['id'] as string;
+      if (!id) return;
+      this.facade.deletePoi(id);
+      const selected = this.facade.selectedPoi();
+      if (selected?.id === id) {
+        this.facade.selectPoi(null);
+      }
     });
   }
 }

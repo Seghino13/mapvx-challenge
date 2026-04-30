@@ -25,4 +25,13 @@ export class PoiForm {
     if (!poi) return;
     this.facade.updatePoiPartial(poi.id, { category });
   }
+
+  deleteSelected(): void {
+    const poi = this.selectedPoi();
+    if (!poi) return;
+    const confirmDelete = confirm(`Delete "${poi.name}"?`);
+    if (!confirmDelete) return;
+    this.facade.deletePoi(poi.id);
+    this.facade.selectPoi(null);
+  }
 }
