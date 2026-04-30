@@ -1,0 +1,21 @@
+.poi-editor {
+  display: grid;
+  grid-template-columns: 260px 1fr 320px;
+  height: 100vh;
+
+  &__sidebar {
+    background: #0f172a;
+    color: white;
+    padding: 16px;
+  }
+
+  &__map {
+    background: #e5e7eb;
+  }
+
+  &__panel {
+    background: #f8fafc;
+    border-left: 1px solid #e2e8f0;
+    padding: 16px;
+  }
+}
