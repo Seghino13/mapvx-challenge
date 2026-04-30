@@ -8,6 +8,12 @@
   </section>
 
   <aside class="poi-editor__panel">
-    Panel
+    <h3>POIs</h3>
+
+    <ul>
+      @for (poi of pois(); track poi.id) {
+        <li>{{ poi.name }} ({{ poi.category }})</li>
+      }
+    </ul>
   </aside>
 </div>

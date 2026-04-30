@@ -50,6 +50,12 @@ A summary of imported and discarded features is generated to provide feedback to
 
 A mapper is used to transform GeoJSON features into domain models, keeping the application decoupled from external formats.
 
+## State Management
+
+State is managed using Angular Signals instead of NgRx to keep the solution simple and efficient.
+
+A lightweight store handles POIs and selection state, while a facade abstracts state mutations and provides a clean API for the UI layer.
+
 ## Setup
 
 ### Requirements
