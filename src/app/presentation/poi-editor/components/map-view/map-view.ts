@@ -24,6 +24,7 @@ import { PoiFacade } from '../../facade/poi.facade';
 export class MapView implements AfterViewInit {
   private readonly facade = inject(PoiFacade);
   readonly pois: Signal<Poi[]> = this.facade.pois;
+  readonly selectedPoi = this.facade.selectedPoi;
 
   @ViewChild('map', { static: false })
   private mapContainer?: ElementRef<HTMLDivElement>;
@@ -31,6 +32,7 @@ export class MapView implements AfterViewInit {
 
   private readonly _poisEffect = effect(() => {
     const pois = this.pois();
+    const selected = this.selectedPoi();
     if (!this.map) return;
     const source = this.map.getSource('pois') as GeoJSONSource | undefined;
     if (!source) return;
@@ -46,6 +48,7 @@ export class MapView implements AfterViewInit {
           id: poi.id,
           name: poi.name,
           category: poi.category,
+          selected: selected?.id === poi.id,
         },
       })),
     };

@@ -12,7 +12,12 @@ export const MAP_LAYER = {
   source: 'pois',
   layout: {
     'icon-image': 'custom-marker',
-    'icon-size': 1,
+    'icon-size': [
+      'case',
+      ['==', ['get', 'selected'], true],
+      1.5,
+      1,
+    ],
     'text-field': ['get', 'name'],
     'text-size': 13,
     'text-offset': [0, 1.5],
