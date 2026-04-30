@@ -37,6 +37,19 @@ This separation ensures scalability, maintainability and testability.
 - **Map isolation**: MapLibre logic is encapsulated to avoid coupling with Angular UI
 - **GeoJSON as source of truth**: aligns with geospatial standards and simplifies import/export
 
+## Data Handling
+
+GeoJSON files are validated before being processed. Invalid features are discarded while valid ones are preserved.
+
+Validation rules include:
+- Only FeatureCollection with Point geometries are accepted
+- Coordinates must be valid (WGS84)
+- Properties must include name and category as strings
+
+A summary of imported and discarded features is generated to provide feedback to the user.
+
+A mapper is used to transform GeoJSON features into domain models, keeping the application decoupled from external formats.
+
 ## Setup
 
 ### Requirements
