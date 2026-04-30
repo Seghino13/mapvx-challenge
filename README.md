@@ -56,6 +56,29 @@ State is managed using Angular Signals instead of NgRx to keep the solution simp
 
 A lightweight store handles POIs and selection state, while a facade abstracts state mutations and provides a clean API for the UI layer.
 
+## Map Interaction
+
+Users can create new Points of Interest (POIs) directly from the map.
+
+### Behavior
+
+- Clicking on the map captures the geographic coordinates (longitude, latitude)
+- A new POI is created using those coordinates
+- The POI is immediately added to the application state
+- The map updates reactively using Angular signals
+
+### Implementation details
+
+- Map click events are handled using MapLibre's event system
+- Coordinates are extracted from the click event (`event.lngLat`)
+- POIs are created through the facade, keeping UI decoupled from state logic
+- The map is updated automatically via a reactive `effect` that listens to state changes
+
+### Notes
+
+- This interaction demonstrates real-time synchronization between Angular state (signals) and an external rendering library (MapLibre)
+- No manual subscriptions or change detection triggers are required due to the use of zoneless + signals
+
 ## Setup
 
 ### Requirements

@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { Poi } from '../../../../domain/poi/models/poi.model';
+import { MapView } from '../../components/map-view/map-view';
 import { PoiFacade } from '../../facade/poi.facade';
 
 @Component({
   selector: 'app-poi-editor-page',
-  imports: [],
+  imports: [MapView],
   templateUrl: './poi-editor-page.html',
   styleUrl: './poi-editor-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
