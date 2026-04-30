@@ -1,0 +1,11 @@
+.app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  &__title {
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
