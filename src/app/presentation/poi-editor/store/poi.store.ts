@@ -30,6 +30,7 @@ export class PoiStore {
   }
 
   setPois(pois: Poi[]) {
+    console.log(pois);
     this._pois.set(pois);
   }
 

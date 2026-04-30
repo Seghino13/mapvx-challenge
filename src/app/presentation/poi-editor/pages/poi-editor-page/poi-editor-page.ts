@@ -12,6 +12,9 @@ import { PoiFacade } from '../../facade/poi.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PoiEditorPage {
+  ngOnInit(): void {
+    this.facade.loadInitialData();
+  }
   private readonly facade: PoiFacade = inject(PoiFacade);
   readonly pois: Signal<Poi[]> = this.facade.pois;
 }

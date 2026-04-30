@@ -14,6 +14,7 @@ export interface GeoJsonPointGeometry {
 
 export interface GeoJsonProperties {
   name: string;
+  id: string;
   category: string;
   [key: string]: unknown;
 }
